@@ -3,11 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>Author</key>
-	<string>Andrew Stacey</string>
+	<string>Unknown</string>
 	<key>Buffer Order</key>
 	<array>
-		<string>ChangeLog</string>
 		<string>Main</string>
+		<string>ChangeLog</string>
+		<string>ARUtilities</string>
 		<string>Lengths</string>
 		<string>Boolean</string>
 		<string>MathsUtilities</string>
@@ -17,19 +18,7 @@
 		<string>Playlist</string>
 		<string>Animation</string>
 	</array>
-	<key>Created</key>
-	<date>2011-11-19T09:27:53Z</date>
-	<key>Dependencies</key>
-	<array>
-		<string>CModule</string>
-		<string>AutoGist</string>
-		<string>Codea Community Tabs</string>
-	</array>
 	<key>Description</key>
-	<string>A library of utility classes and functions.</string>
-	<key>Project</key>
-	<string>Library Utilities</string>
-	<key>Version</key>
-	<real>2</real>
+	<string>No description available</string>
 </dict>
 </plist>

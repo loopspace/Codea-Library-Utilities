@@ -2,9 +2,7 @@
 Some mathematical utilities.
 --]]
 
-if cmodule then
-   Matrix = cimport "Matrix"
-end
+local Matrix = Matrix
 
 local function Ordinal(n)
     local k = n%10
@@ -38,8 +36,14 @@ local function Regression(t)
         yy = yy + v.y*v.y
     end
     local d = n*xx - x*x
+    local matrix
+    if Matrix then
+        matrix = Matrix({{0,0},{0,0}})
+    else
+        matrix = {{0,0},{0,0}}
+    end
     if d == 0 then
-        return false,false,Matrix({{0,0},{0,0}})
+        return false,false,matrix
     end
     return (n*xy - x*y)/d,
             (-x*xy + xx*y)/d,
