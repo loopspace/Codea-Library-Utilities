@@ -20,6 +20,14 @@ local function Ordinal(n)
 end
         
 local function Regression(t)
+    local Matrix
+    if _M then
+        if cmodule.loaded "Matrix" then
+            Matrix = cimport "Matrix"
+        end
+    else
+        Matrix = function(t) return t end
+    end
     local n, xy, x, y, xx, yy = 0,0,0,0,0,0
     for k,v in ipairs(t) do
         n = n + 1
@@ -33,13 +41,9 @@ local function Regression(t)
     if d == 0 then
         return false,false,Matrix({{0,0},{0,0}})
     end
-    local matrix
-    if Matrix then
-        matrix = Matrix({{xx,x},{x,n}})
-    end
     return (n*xy - x*y)/d,
             (-x*xy + xx*y)/d,
-            matrix,
+            Matrix({{xx,x},{x,n}}),
             (n*xy -x*y)^2/((n*xx-x*x)*(n*yy-y*y))
 end
 
