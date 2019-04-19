@@ -6,8 +6,7 @@ The older routines modified tables for vertices and colours whereas the newer on
 --]]
 
 if cmodule then
-    Colour = unpack(cimport "Colour")
-   cimport "ColourNames"
+    cimport "ColourExt"
    cimport "MathsUtilities"
 end
 
@@ -184,7 +183,7 @@ local function AddPlank(t)
         colours = t.colours,
         light = t.light,
         cube = cube,
-        colour = t.colour or Colour.x11.Burlywood3
+        colour = t.colour or color():new("x11","Burlywood3")
     })
 end
 
@@ -206,7 +205,7 @@ local function addPlank(t)
         position = t.position,
         light = t.light,
         cube = cube,
-        colour = t.colour or Colour.x11.Burlywood3
+        colour = t.colour or color():new("x11","Burlywood3")
     })
 end
 
@@ -230,7 +229,7 @@ local function AddSlab(t)
         colours = t.colours,
         light = t.light,
         cube = cube,
-        colour = t.colour or Colour.x11.Burlywood3
+        colour = t.colour or color():new("x11","Burlywood3")
     })
 end
 
@@ -254,7 +253,7 @@ local function addSlab(t)
         position = t.position,
         light = t.light,
         cube = cube,
-        colour = t.colour or Colour.x11.Burlywood3
+        colour = t.colour or color():new("x11","Burlywood3")
     })
 end
 
@@ -266,7 +265,7 @@ local function AddHalfTube(t)
     }
     local vertices = t.vertices
     local colours = t.colours
-    local c = t.colour or Colour.svg.DarkSlateBlue
+    local c = t.colour or color():new("svg","DarkSlateBlue")
     local l = t.light:normalize()
     local n = t.number or 36
     local step = math.pi/n
@@ -285,7 +284,7 @@ local function AddHalfTube(t)
             ver = math.cos(v[2]) * b[v[1]][2] + math.sin(v[2]) * b[v[1]][3]
             table.insert(vertices,b[v[1]][1] + ver)
             lc = l:dot(ver)
-            table.insert(colours,Colour.shade(c,50 + 25*lc))
+            table.insert(colours,c:shade(50 + 25*lc))
         end
     end
     return vertices, colours
@@ -300,7 +299,7 @@ local function addHalfTube(t)
     }
     local vertices = t.vertices
     local colours = t.colours
-    local c = t.colour or Colour.svg.DarkSlateBlue
+    local c = t.colour or color():new("svg","DarkSlateBlue")
     local l = t.light:normalize()
     local n = t.number or 36
     if pos > m.size - 6*n then
@@ -322,7 +321,7 @@ local function addHalfTube(t)
             ver = math.cos(v[2]) * b[v[1]][2] + math.sin(v[2]) * b[v[1]][3]
             m:vertex(pos + 6*(i-1) + k,b[v[1]][1] + ver)
             lc = l:dot(ver)
-            m:color(pos + 6*(i-1) + k,Colour.shade(c,50 + 25*lc))
+            m:color(pos + 6*(i-1) + k,c:shade(50 + 25*lc))
         end
     end
     return pos + 6*n
@@ -363,7 +362,7 @@ local function AddTube(t)
     local colours = t.colours
     local texcoords = t.texCoords
     local normals = t.normals
-    local c = t.colour or Colour.svg.DarkSlateBlue
+    local c = t.colour or color():new("svg","DarkSlateBlue")
     local l = t.light
     if l then
         l = l:normalize()
@@ -387,7 +386,7 @@ local function AddTube(t)
             ver = ver:normalize()
             if l then
                 lc = l:dot(ver)
-                table.insert(colours,Colour.shade(c,50 + 40*lc))
+                table.insert(colours,c:shade(50 + 40*lc))
             else
                 table.insert(colours,c)
             end
@@ -411,7 +410,7 @@ local function addTube(t)
     }
     local texcoords = t.texCoords
     local normals = t.normals
-    local c = t.colour or Colour.svg.DarkSlateBlue
+    local c = t.colour or color():new("svg","DarkSlateBlue")
     local l = t.light
     if l then
         l = l:normalize()
@@ -438,7 +437,7 @@ local function addTube(t)
             m:vertex(p+6*(i-1)+k,b[v[1]][1] + ver)
             if l then
                 lc = l:dot(ver)
-                m:color(p+6*(i-1)+k,Colour.shade(c,50 + 25*lc))
+                m:color(p+6*(i-1)+k,c:shade(50 + 25*lc))
             else
                 m:color(p+6*(i-1)+k,c)
             end
@@ -465,7 +464,7 @@ local function AddCappedTube(t)
     local colours = t.colours
     local texcoords = t.texCoords
     local normals = t.normals
-    local c = t.colour or Colour.svg.DarkSlateBlue
+    local c = t.colour or color():new("svg","DarkSlateBlue")
     local l = t.light
     if l then
         l = l:normalize()
@@ -489,7 +488,7 @@ local function AddCappedTube(t)
             ver = ver:normalize()
             if l then
                 lc = l:dot(ver)
-                table.insert(colours,Colour.shade(c,50 + 40*lc))
+                table.insert(colours,c:shade(50 + 40*lc))
             else
                 table.insert(colours,c)
             end
@@ -514,7 +513,7 @@ local function AddCappedTube(t)
             ver = (b[v[1]][1] - b[v[1]%2+1][1]):normalize()
             if l then
                 lc = l:dot(ver)
-                table.insert(colours,Colour.shade(c,50 + 40*lc))
+                table.insert(colours,c:shade(50 + 40*lc))
             else
                 table.insert(colours,c)
             end
@@ -544,7 +543,7 @@ local function AddCube(t)
     local vertices = t.vertices or {}
     local colours = t.colours or {}
     local normals = t.normals or {}
-    local c = t.colour or Colour.x11.Burlywood3
+    local c = t.colour or color():new("x11","Burlywood3")
     local l = t.light:normalize()
     local faces = t.faces or CubeFaces
     local lc,n
@@ -558,7 +557,7 @@ local function AddCube(t)
             table.insert(vertices,cube[v[u]])
             table.insert(normals,n)
             table.insert(colours,
-                Colour.shade(c,75 + 25*lc)
+                c:shade(75 + 25*lc)
                 )
         end
     end
@@ -572,7 +571,7 @@ local function addCube(t)
         m:resize(pos + 300)
     end
     local cube = t.cube
-    local c = t.colour or Colour.x11.Burlywood3
+    local c = t.colour or color():new("x11","Burlywood3")
     local l = t.light:normalize()
     local faces = t.faces or CubeFaces
     local lc,n
@@ -584,7 +583,7 @@ local function addCube(t)
         end
         for i,u in ipairs({1,2,3,2,3,4}) do
             m:vertex(pos + 6*(k-1) + i,cube[v[u]])
-            m:color(pos + 6*(k-1) + i,Colour.shade(c,75 + 25*lc))
+            m:color(pos + 6*(k-1) + i,c:shade(75 + 25*lc))
             m:normal(pos + 6*(k-1) + i,n)
         end
     end
@@ -601,7 +600,7 @@ local function AddJewel(t)
     end
     local vertices = t.vertices or {}
     local colours = t.colours or {}
-    local clr = t.colour or Colour.svg.IndianRed
+    local clr = t.colour or color():new("svg","IndianRed")
     local l = t.light:normalize()
     local th = math.pi/n
     local cs = math.cos(th)
@@ -623,7 +622,7 @@ local function AddJewel(t)
             nml = j*nh*a[1] + .5*(1 - j*k)*b + .5*(1 + j*k)*c
             cl = nml:dot(l)/nhl
             for m=1,3 do
-                table.insert(colours,Colour.shade(clr,75 + 25*cl))
+                table.insert(colours,clr:shade(75 + 25*cl))
             end
             nv = nv + 3
         end
@@ -647,7 +646,7 @@ local function addJewel(t)
     for i = 1,3 do
         a[i] = la*a[i]
     end
-    local clr = t.colour or Colour.svg.IndianRed
+    local clr = t.colour or color():new("svg","IndianRed")
     local l = t.light:normalize()
     local th = math.pi/n
     local cs = math.cos(th)
@@ -668,7 +667,7 @@ local function addJewel(t)
             nml = j*nh*a[1] + .5*(1 - j*k)*b + .5*(1 + j*k)*c
             cl = nml:dot(l)/nhl
             for r=1,3 do
-                m:color(pos + 3*(i-1) + r,Colour.shade(clr,75 + 25*cl))
+                m:color(pos + 3*(i-1) + r,clr:shade(75 + 25*cl))
             end
         end
         b = c
@@ -694,7 +693,7 @@ local function AddStar(t)
         v = bb[1]*b[1] + bb[2]*b[2] + bb[3]*b[3]
         n = math.abs(v:dot(l))
         
-        c = Colour.shade(Colour.x11["LemonChiffon" .. math.random(1,4)], 70+n*30)
+        c = color():new("x11","LemonChiffon" .. math.random(1,4)):shade(70+n*30)
         for m=1,3 do
             table.insert(colours,c)
             table.insert(vertices,o+s*(v - 2*bb[m]*b[m]))
@@ -723,7 +722,7 @@ local function addStar(t)
         v = bb[1]*b[1] + bb[2]*b[2] + bb[3]*b[3]
         n = math.abs(v:dot(l))
         
-        c = Colour.shade(Colour.x11[col .. math.random(1,4)], 70+n*30)
+        c = color():new("x11",col .. math.random(1,4)):shade(70+n*30)
         for r=1,3 do
             m:vertex(pos + 3*i + r,o+s*(v - 2*bb[r]*b[r]))
             m:color(pos + 3*i + r,c)
@@ -738,7 +737,7 @@ local function addSphere(t)
     local o = t.origin
     local s = t.size
     local l = t.light:normalize()
-    local c = t.colour or Colour.svg.DarkSlateBlue
+    local c = t.colour or color():new("svg","DarkSlateBlue")
     local n = t.number or 36
     if p > m.size - 12*n*(n-1) then
         m:resize(p+12*n*(n-1))
@@ -763,7 +762,7 @@ local function addSphere(t)
                 m:vertex(p+12*n*(i-2) + 6*(j-1)+k,o + ver)
                 if l then
                     lc = l:dot(ver)
-                    m:color(p+12*n*(i-2) + 6*(j-1)+k,Colour.shade(c,50 + 25*lc))
+                    m:color(p+12*n*(i-2) + 6*(j-1)+k,c:shade(50 + 25*lc))
                 else
                     m:color(p+12*n*(i-2) + 6*(j-1)+k,c)
                 end
@@ -787,7 +786,7 @@ local function addSphere(t)
                 m:vertex(p+12*n*(n-2) + i*6*n + 3*(j-1)+k,o + ver)
                 if l then
                     lc = l:dot(ver)
-                    m:color(p+12*n*(n-2) + i*6*n + 3*(j-1)+k,Colour.shade(c,50 + 25*lc))
+                    m:color(p+12*n*(n-2) + i*6*n + 3*(j-1)+k,c:shade(50 + 25*lc))
                 else
                     m:color(p+12*n*(n-2) + i*6*n + 3*(j-1)+k,c)
                 end
@@ -808,7 +807,7 @@ local function AddSphere(t)
     local o = t.origin
     local s = t.size
     local l = t.light:normalize()
-    local c = t.colour or Colour.svg.DarkSlateBlue
+    local c = t.colour or color():new("svg","DarkSlateBlue")
     local n = t.number or 36
     local step = math.pi/n
     local theta,ptheta,phi,pphi,lc,ver
@@ -830,7 +829,7 @@ local function AddSphere(t)
                 table.insert(vertices,o + ver)
                 if l then
                     lc = l:dot(ver)
-                    table.insert(colours,Colour.shade(c,50 + 40*lc))
+                    table.insert(colours,c:shade(50 + 40*lc))
                 else
                     table.insert(colours,c)
                 end
@@ -853,7 +852,7 @@ local function AddSphere(t)
                 table.insert(vertices,o + ver)
                 if l then
                     lc = l:dot(ver)
-                    table.insert(colours,Colour.shade(c,50 + 25*lc))
+                    table.insert(colours,c:shade(50 + 25*lc))
                 else
                     table.insert(colours,c)
                 end
@@ -877,7 +876,7 @@ local function AddSemiSphere(t)
     if t.light then
         l = t.light:normalize()
     end
-    local c = t.colour or Colour.svg.DarkSlateBlue
+    local c = t.colour or color():new("svg","DarkSlateBlue")
     local n = t.number or 36
     n = n + n%4
     local step = 2*math.pi/n
@@ -901,7 +900,7 @@ local function AddSemiSphere(t)
                 ver = ver:normalize()
                 if l then
                     lc = l:dot(ver)
-                    table.insert(colours,Colour.shade(c,50 + 40*lc))
+                    table.insert(colours,c:shade(50 + 40*lc))
                 else
                     table.insert(colours,c)
                 end
@@ -924,7 +923,7 @@ local function AddSemiSphere(t)
                 ver = ver:normalize()
                 if l then
                     lc = l:dot(ver)
-                    table.insert(colours,Colour.shade(c,50 + 40*lc))
+                    table.insert(colours,c:shade(50 + 40*lc))
                 else
                     table.insert(colours,c)
                 end
@@ -947,7 +946,7 @@ local function AddCappedSemiSphere(t)
     if t.light then
         l = t.light:normalize()
     end
-    local c = t.colour or Colour.svg.DarkSlateBlue
+    local c = t.colour or color():new("svg","DarkSlateBlue")
     local n = t.number or 36
     n = n + n%4
     local step = 2*math.pi/n
@@ -971,7 +970,7 @@ local function AddCappedSemiSphere(t)
                 ver = ver:normalize()
                 if l then
                     lc = l:dot(ver)
-                    table.insert(colours,Colour.shade(c,50 + 40*lc))
+                    table.insert(colours,c:shade(50 + 40*lc))
                 else
                     table.insert(colours,c)
                 end
@@ -994,7 +993,7 @@ local function AddCappedSemiSphere(t)
                 ver = ver:normalize()
                 if l then
                     lc = l:dot(ver)
-                    table.insert(colours,Colour.shade(c,50 + 40*lc))
+                    table.insert(colours,c:shade(50 + 40*lc))
                 else
                     table.insert(colours,c)
                 end
@@ -1016,7 +1015,7 @@ local function AddCappedSemiSphere(t)
                 ver = vec3(0,-1,0)^q
                 if l then
                     lc = l:dot(ver)
-                    table.insert(colours,Colour.shade(c,50 + 40*lc))
+                    table.insert(colours,c:shade(50 + 40*lc))
                 else
                     table.insert(colours,c)
                 end
@@ -1050,7 +1049,7 @@ local function AddCappedSphereJoint(t)
     if t.light then
         l = t.light:normalize()
     end
-    local c = t.colour or Colour.svg.DarkSlateBlue
+    local c = t.colour or color():new("svg","DarkSlateBlue")
     local n = t.number or 36
     local step = math.pi/n
     local nh = math.ceil(math.abs(ang/step))
@@ -1075,7 +1074,7 @@ local function AddCappedSphereJoint(t)
                 ver = ver:normalize()
                 if l then
                     lc = l:dot(ver)
-                    table.insert(colours,Colour.shade(c,50 + 40*lc))
+                    table.insert(colours,c:shade(50 + 40*lc))
                 else
                     table.insert(colours,c)
                 end
@@ -1099,7 +1098,7 @@ local function AddCappedSphereJoint(t)
                 ver = ver:normalize()
                 if l then
                     lc = l:dot(ver)
-                    table.insert(colours,Colour.shade(c,50 + 40*lc))
+                    table.insert(colours,c:shade(50 + 40*lc))
                 else
                     table.insert(colours,c)
                 end
@@ -1130,7 +1129,7 @@ local function AddCappedSphereJoint(t)
                 end
                 if l then
                     lc = l:dot(ver)
-                    table.insert(colours,Colour.shade(c,50 + 40*lc))
+                    table.insert(colours,c:shade(50 + 40*lc))
                 else
                     table.insert(colours,c)
                 end
@@ -1164,7 +1163,7 @@ local function AddSphereJoint(t)
     if t.light then
         l = t.light:normalize()
     end
-    local c = t.colour or Colour.svg.DarkSlateBlue
+    local c = t.colour or color():new("svg","DarkSlateBlue")
     local n = t.number or 36
     local step = math.pi/n
     local nh = math.ceil(math.abs(ang/step))
@@ -1189,7 +1188,7 @@ local function AddSphereJoint(t)
                 ver = ver:normalize()
                 if l then
                     lc = l:dot(ver)
-                    table.insert(colours,Colour.shade(c,50 + 40*lc))
+                    table.insert(colours,c:shade(50 + 40*lc))
                 else
                     table.insert(colours,c)
                 end
@@ -1213,7 +1212,7 @@ local function AddSphereJoint(t)
                 ver = ver:normalize()
                 if l then
                     lc = l:dot(ver)
-                    table.insert(colours,Colour.shade(c,50 + 40*lc))
+                    table.insert(colours,c:shade(50 + 40*lc))
                 else
                     table.insert(colours,c)
                 end
